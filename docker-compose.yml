@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  web-server:
+    build: 
+        context: ./container/web-server
+        dockerfile: ./Dockerfile
+    links:
+       - php-fpm
+    ports:
+      - 80:80
+    volumes:
+       - ./application:/var/www
+
+  php-fpm:
+    build:
+        context: ./container/php-fpm
+        dockerfile: ./Dockerfile
+    links:
+       - memcache-1
+       - memcache-2
+    volumes:
+       - ./application:/var/www
+
+  memcache-1:
+    build:
+        context: ./container/memcache
+        dockerfile: ./Dockerfile
+
+  memcache-2:
+    build:
+        context: ./container/memcache
+        dockerfile: ./Dockerfile
